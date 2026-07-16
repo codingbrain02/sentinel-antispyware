@@ -21,10 +21,17 @@
     'config.ini', 'preferences.json', 'CurrentVersion', 'Run', 'RunOnce',
     'msi.tmp', 'setup.log', 'crash.dmp', 'thumb.db',
   ];
+  const defenderConflict = {
+    name: 'WindowsDefender.ThirdPartyAVConflict',
+    file: 'AntivirusProvider',
+    dir: 'WMI\\root\\SecurityCenter2',
+    sev: 'med',
+    kind: 'Configuration',
+  };
   const threatCatalog = [
     { name: 'Trojan.Generic.KDV', file: 'update_helper.exe', dir: 'C:\\Users\\AppData\\Local\\Temp', sev: 'high', kind: 'Trojan' },
     { name: 'Spyware.KeyLogger.MX', file: 'kbdservice.dll', dir: 'C:\\Windows\\System32', sev: 'high', kind: 'Spyware' },
-    { name: 'WindowsDefender.ThirdPartyAVConflict', file: 'AntivirusProvider', dir: 'WMI\\root\\SecurityCenter2', sev: 'med', kind: 'Configuration' },
+    defenderConflict,
     { name: 'PUP.Optional.OpenCandy', file: 'oc_installer.exe', dir: 'C:\\Users\\Downloads', sev: 'low', kind: 'PUP' },
     { name: 'Trojan.Downloader.Zlob', file: 'dl_svc.exe', dir: 'C:\\ProgramData\\ZlobHelper', sev: 'high', kind: 'Trojan' },
     { name: 'TrackingCookie.DoubleClick', file: 'dclk.cookie', dir: 'C:\\Users\\AppData\\Local\\Chrome\\Cookies', sev: 'low', kind: 'Cookie' },
@@ -35,6 +42,7 @@
     { name: 'Spyware.Zeus.Banker', file: 'bnk.dat', dir: 'C:\\Users\\AppData\\Roaming', sev: 'high', kind: 'Spyware' },
     { name: 'Adware.MindSpark', file: 'ms_ext.crx', dir: 'C:\\Users\\AppData\\Local\\Chrome\\Extensions', sev: 'low', kind: 'Adware' },
   ];
+  const randomThreatCatalog = threatCatalog.filter((threat) => threat !== defenderConflict);
 
   function randPath() {
     const d = dirs[Math.floor(Math.random() * dirs.length)];
@@ -233,11 +241,11 @@
   // ---------- Scan runner --------------------------------------------
   let plannedThreats = [];
 
-  function scheduleThreat(atMs) {
+  function scheduleThreat(atMs, plannedThreat = null) {
     const t = state.timers;
     t.push(setTimeout(() => {
       if (!state.running) return;
-      const proto = threatCatalog[Math.floor(Math.random() * threatCatalog.length)];
+      const proto = plannedThreat || randomThreatCatalog[Math.floor(Math.random() * randomThreatCatalog.length)];
       const threat = { ...proto, id: 100000 + Math.floor(Math.random() * 899999) };
       state.threats.push(threat);
       threatEl.textContent = state.threats.length;
@@ -273,7 +281,7 @@
     plannedThreats = [];
     for (let i = 0; i < count; i++) {
       const p = 0.15 + (0.92 - 0.15) * ((i + 0.5) / count) + (Math.random() - 0.5) * 0.05;
-      scheduleThreat(Math.floor(TOTAL_MS * p));
+      scheduleThreat(Math.floor(TOTAL_MS * p), i === 0 ? defenderConflict : null);
     }
 
     // Tick file paths in log
