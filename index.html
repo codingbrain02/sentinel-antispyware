@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sentinel Anti-Spyware</title>
+    <meta name="description" content="UI inspired by classic anti-spyware suites." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v10c0 8 12 13 12 13s12-5 12-13V7L16 2z' fill='%2300ff9c'/%3E%3Cpath d='M11 16l3 3 7-7' stroke='%23071018' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="crt-overlay" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <svg
+          class="logo"
+          width="34"
+          height="34"
+          viewBox="0 0 32 32"
+          fill="none"
+          aria-label="Sentinel shield"
+        >
+          <path
+            d="M16 2 4 7v10c0 8 12 13 12 13s12-5 12-13V7L16 2z"
+            fill="var(--color-primary)"
+            fill-opacity="0.15"
+            stroke="var(--color-primary)"
+            stroke-width="1.6"
+          />
+          <path
+            d="M11 16l3 3 7-7"
+            stroke="var(--color-primary)"
+            stroke-width="2.2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <div class="brand-text">
+          <div class="brand-name">SENTINEL</div>
+          <div class="brand-sub">Anti-Spyware</div>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true">Scan</button>
+        <button class="tab" role="tab">Quarantine</button>
+        <button class="tab" role="tab">History</button>
+        <button class="tab" role="tab">Preferences</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <div class="seg" role="radiogroup" aria-label="Narrator voice" title="Narrator voice">
+          <button class="seg-btn active" data-voice="m" role="radio" aria-checked="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+            Male
+          </button>
+          <button class="seg-btn" data-voice="f" role="radio" aria-checked="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+            Female
+          </button>
+        </div>
+        <label class="toggle" title="AI voice narration">
+          <input type="checkbox" id="toggleVoice" checked />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">AI Voice</span>
+        </label>
+        <label class="toggle" title="UI sound effects">
+          <input type="checkbox" id="toggleSfx" checked />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">Sound FX</span>
+        </label>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <!-- Left: scan controls -->
+      <aside class="panel side">
+        <h2 class="panel-title">Scan Options</h2>
+
+        <div class="scan-modes" role="radiogroup" aria-label="Scan mode">
+          <label class="mode">
+            <input type="radio" name="mode" value="quick" />
+            <div class="mode-body">
+              <div class="mode-name">Quick Scan</div>
+              <div class="mode-desc">Common infection points · ~30s</div>
+            </div>
+          </label>
+          <label class="mode selected">
+            <input type="radio" name="mode" value="enhanced" checked />
+            <div class="mode-body">
+              <div class="mode-name">
+                Enhanced Scan
+                <span class="pill">RECOMMENDED</span>
+              </div>
+              <div class="mode-desc">AI-assisted heuristic + signature</div>
+            </div>
+          </label>
+          <label class="mode">
+            <input type="radio" name="mode" value="full" />
+            <div class="mode-body">
+              <div class="mode-name">Full System Scan</div>
+              <div class="mode-desc">Every file, every drive</div>
+            </div>
+          </label>
+          <label class="mode">
+            <input type="radio" name="mode" value="custom" />
+            <div class="mode-body">
+              <div class="mode-name">Custom</div>
+              <div class="mode-desc">Choose folders manually</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="targets">
+          <div class="target-title">Locations</div>
+          <label class="check"><input type="checkbox" checked /> System memory</label>
+          <label class="check"><input type="checkbox" checked /> Registry keys</label>
+          <label class="check"><input type="checkbox" checked /> Startup entries</label>
+          <label class="check"><input type="checkbox" checked /> Browser cookies</label>
+          <label class="check"><input type="checkbox" checked /> Program files</label>
+          <label class="check"><input type="checkbox" /> External drives</label>
+        </div>
+
+        <button id="startBtn" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
+          Start Enhanced Scan
+        </button>
+        <button id="stopBtn" class="btn-ghost" disabled>Stop</button>
+
+        <div class="defs">
+          <div class="defs-row"><span>Definitions</span><span class="mono">v 2026.07.15</span></div>
+          <div class="defs-row"><span>Signatures</span><span class="mono">3,481,220</span></div>
+          <div class="defs-row"><span>Last scan</span><span class="mono">14 hours ago</span></div>
+          <div class="defs-row"><span>Engine</span><span class="mono">Sentinel AI · v9.4</span></div>
+        </div>
+      </aside>
+
+      <!-- Center: live scan display -->
+      <section class="panel main">
+        <div class="status-row">
+          <div class="status-block">
+            <div class="status-label">Status</div>
+            <div class="status-value" id="statusValue">Idle · ready to scan</div>
+          </div>
+          <div class="status-block">
+            <div class="status-label">Elapsed</div>
+            <div class="status-value mono" id="elapsed">00:00</div>
+          </div>
+          <div class="status-block">
+            <div class="status-label">Scanned</div>
+            <div class="status-value mono" id="scannedCount">0</div>
+          </div>
+          <div class="status-block danger">
+            <div class="status-label">Threats</div>
+            <div class="status-value mono" id="threatCount">0</div>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-track">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-scan" id="progressScan"></div>
+          </div>
+          <div class="progress-labels">
+            <span id="phaseLabel">Awaiting start</span>
+            <span class="mono" id="progressPct">0%</span>
+          </div>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="radar" aria-hidden="true">
+            <svg viewBox="0 0 300 300" width="100%" height="100%">
+              <defs>
+                <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.35" />
+                  <stop offset="70%" stop-color="var(--color-primary)" stop-opacity="0.02" />
+                  <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0" />
+                  <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.9" />
+                </linearGradient>
+              </defs>
+              <circle cx="150" cy="150" r="140" fill="url(#rg)" />
+              <g stroke="var(--color-primary)" stroke-opacity="0.25" fill="none">
+                <circle cx="150" cy="150" r="40" />
+                <circle cx="150" cy="150" r="80" />
+                <circle cx="150" cy="150" r="120" />
+                <line x1="10" y1="150" x2="290" y2="150" />
+                <line x1="150" y1="10" x2="150" y2="290" />
+              </g>
+              <g class="radar-sweep" style="transform-origin:150px 150px">
+                <path d="M150 150 L290 150 A140 140 0 0 0 220 30 Z" fill="url(#sweep)" opacity="0.5"/>
+              </g>
+              <g id="radarBlips"></g>
+              <circle cx="150" cy="150" r="3" fill="var(--color-primary)" />
+            </svg>
+          </div>
+
+          <div class="feed">
+            <div class="feed-title">
+              <span class="dot"></span>
+              Live scan output
+            </div>
+            <ul class="log" id="log" aria-live="polite"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: threats -->
+      <aside class="panel threats-panel">
+        <h2 class="panel-title">
+          Detected Threats
+          <span class="pill danger-pill" id="threatBadge" hidden>NEW</span>
+        </h2>
+
+        <div class="threat-list" id="threatList">
+          <div class="empty-state">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.35">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <p>No threats detected yet.</p>
+            <p class="empty-sub">Run a scan to inspect your system.</p>
+          </div>
+        </div>
+
+        <div class="threat-actions">
+          <button id="quarantineBtn" class="btn-danger" disabled>Quarantine Selected</button>
+          <button id="ignoreBtn" class="btn-ghost" disabled>Ignore</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="statusbar">
+      <span class="mono status-ok" id="footerStatus">● System protected</span>
+      <span class="mono muted">Sentinel Anti-Spyware</span>
+      <span class="mono muted" id="clock">--:--:--</span>
+    </footer>
+
+    <!-- Threat Alert Modal -->
+    <div class="modal-backdrop" id="modal" hidden>
+      <div class="modal" role="alertdialog" aria-labelledby="modalTitle">
+        <div class="modal-icon">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <h3 id="modalTitle">Threats detected</h3>
+        <p id="modalBody">The scan finished. Review and quarantine the detected items to keep your system safe.</p>
+        <div class="modal-actions">
+          <button class="btn-primary" id="modalReview">Review Threats</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio elements — male (m) + female (f) variants -->
+    <audio id="audioIntro_m" src="assets/voice_intro_m.mp3" preload="auto"></audio>
+    <audio id="audioScanning_m" src="assets/voice_scanning_m.mp3" preload="auto"></audio>
+    <audio id="audioThreat_m" src="assets/voice_threat_m.mp3" preload="auto"></audio>
+    <audio id="audioClean_m" src="assets/voice_clean_m.mp3" preload="auto"></audio>
+    <audio id="audioIntro_f" src="assets/voice_intro_f.mp3" preload="auto"></audio>
+    <audio id="audioScanning_f" src="assets/voice_scanning_f.mp3" preload="auto"></audio>
+    <audio id="audioThreat_f" src="assets/voice_threat_f.mp3" preload="auto"></audio>
+    <audio id="audioClean_f" src="assets/voice_clean_f.mp3" preload="auto"></audio>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
