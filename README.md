@@ -1,6 +1,6 @@
-# Sentinel Anti-Spyware Demo
+# Microsoft Windows Defender Demo
 
-A local, pixel-faithful clone of the Sentinel demo scanner interface.
+A local Microsoft Windows Defender-inspired scanner interface.
 
 ## Run locally
 
