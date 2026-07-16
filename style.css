@@ -506,6 +506,21 @@ body {
   height: 32px;
 }
 
+.logo-wordmark {
+  display: block;
+  width: 200px;
+  height: auto;
+  max-height: none;
+  transform: translate(-8px, -26px);
+}
+
+.brand-logo-crop {
+  display: block;
+  width: 176px;
+  height: 50px;
+  overflow: hidden;
+}
+
 .brand-name {
   color: var(--color-text);
   font-size: 15px;
@@ -948,6 +963,8 @@ body {
 }
 
 @media (max-width: 420px) {
+  .brand-logo-crop { width: 158px; height: 44px; }
+  .logo-wordmark { width: 180px; transform: translate(-7px, -24px); }
   .brand-name { font-size: 14px; }
   .brand-sub { font-size: 10px; }
 
